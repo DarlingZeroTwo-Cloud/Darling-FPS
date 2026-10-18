@@ -1,0 +1,88 @@
+[gd_scene load_steps=4 format=3 uid="uid://d5f6g7h8j9k0l"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="GunMaterial"]
+albedo_color = Color(0.1, 0.1, 0.12, 1)
+metallic = 0.8
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="RedDotMaterial"]
+albedo_color = Color(1, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.1, 0.1, 1)
+emission_energy_multiplier = 2.0
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D")
+position = Vector3(0, 0.9, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(0, 1.6, 0)
+fov = 75.0
+near = 0.1
+far = 500.0
+
+[node name="WeaponHolder" type="Node3D" parent="Camera3D"]
+position = Vector3(0.25, -0.2, -0.5)
+
+[node name="M4Body" type="MeshInstance3D" parent="Camera3D/WeaponHolder"]
+mesh = SubResource("BoxMesh")
+material = SubResource("GunMaterial")
+
+[node name="M4Barrel" type="MeshInstance3D" parent="Camera3D/WeaponHolder"]
+position = Vector3(0, 0.02, -0.35)
+mesh = SubResource("CylinderMesh")
+material = SubResource("GunMaterial")
+
+[node name="M4Magazine" type="MeshInstance3D" parent="Camera3D/WeaponHolder"]
+position = Vector3(0, -0.12, -0.05)
+rotation = Vector3(0.1, 0, 0)
+mesh = SubResource("MagMesh")
+material = SubResource("GunMaterial")
+
+[node name="M4Stock" type="MeshInstance3D" parent="Camera3D/WeaponHolder"]
+position = Vector3(0, 0, 0.15)
+mesh = SubResource("StockMesh")
+material = SubResource("GunMaterial")
+
+[node name="RedDotSight" type="MeshInstance3D" parent="Camera3D/WeaponHolder"]
+position = Vector3(0, 0.08, -0.05)
+mesh = SubResource("SightMesh")
+material = SubResource("GunMaterial")
+
+[node name="RedDot" type="MeshInstance3D" parent="Camera3D/WeaponHolder/RedDotSight"]
+position = Vector3(0, 0.02, -0.05)
+mesh = SubResource("DotMesh")
+material = SubResource("RedDotMaterial")
+
+[node name="Muzzle" type="Node3D" parent="Camera3D/WeaponHolder"]
+position = Vector3(0, 0.02, -0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh"]
+size = Vector3(0.06, 0.1, 0.5)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh"]
+top_radius = 0.015
+bottom_radius = 0.015
+height = 0.3
+
+[sub_resource type="BoxMesh" id="MagMesh"]
+size = Vector3(0.04, 0.15, 0.08)
+
+[sub_resource type="BoxMesh" id="StockMesh"]
+size = Vector3(0.05, 0.08, 0.2)
+
+[sub_resource type="BoxMesh" id="SightMesh"]
+size = Vector3(0.03, 0.05, 0.08)
+
+[sub_resource type="SphereMesh" id="DotMesh"]
+radius = 0.005
+height = 0.01
